@@ -68,9 +68,9 @@ func main() {
 
 	for {
 		if checkConnection(ip, msg) {
-			fmt.Printf("\r%s%sOK%s %s%s.    ", spinner[i], Green, Reset, ip, Reset)
+			fmt.Printf("\r%s %sOK%s %s%s.    ", spinner[i], Green, Reset, ip, Reset)
 		} else {
-			fmt.Printf("\r%s%s%sDEAD%s %s%s. ", spinner[i], RedBG, White, Reset, ip, Reset)
+			fmt.Printf("\r%s %s%sDEAD%s %s%s. ", spinner[i], RedBG, White, Reset, ip, Reset)
 		}
 
 		i = (i + 1) % len(spinner)
