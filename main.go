@@ -48,10 +48,12 @@ func main() {
 	var ip string
 	var interval int
 	var msg string
+	var spinnerStyle string
 
 	flag.StringVar(&ip, "ip", "8.8.8.8", "Custom IP address to ping")
 	flag.IntVar(&interval, "interval", 250, "Custom interval (in ms) between checks")
 	flag.StringVar(&msg, "msg", "ping", "Custom message to send in the ICMP request")
+	flag.StringVar(&spinnerStyle, "spinner", "default", "Choose spinner style: default, or clock")
 	flag.Parse()
 
 	const (
@@ -63,7 +65,18 @@ func main() {
 		RedBG = "\033[41m"
 	)
 
-	spinner := []string{"|", "/", "-", "\\"}
+	var spinner []string
+
+	// ? Notes for contributors:
+	// ? Feel free to add more spinner styles here :)
+
+	switch spinnerStyle {
+	case "clock":
+		spinner = []string{"|", "/", "-", "\\"}
+	default:
+		spinner = []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}
+	}
+
 	i := 0
 
 	for {
