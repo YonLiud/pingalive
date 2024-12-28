@@ -44,7 +44,7 @@ func checkConnection(ip, msg string) bool {
 	return err == nil
 }
 
-func main() {
+func parseFlags() (string, int, string, string) {
 	var ip string
 	var interval int
 	var msg string
@@ -56,6 +56,21 @@ func main() {
 	flag.StringVar(&spinnerStyle, "spinner", "default", "Choose spinner style: default, or clock")
 	flag.Parse()
 
+	return ip, interval, msg, spinnerStyle
+}
+
+// ? Contributors! Add your spinner style here! make it unique and fun!
+
+func getSpinnerStyle(spinnerStyle string) []string {
+	switch spinnerStyle {
+	case "clock":
+		return []string{"|", "/", "-", "\\"}
+	default:
+		return []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}
+	}
+}
+
+func printStatus(isAlive bool, spinner []string, i int, ip string) {
 	const (
 		Reset = "\033[0m"
 		White = "\033[37m"
@@ -65,25 +80,24 @@ func main() {
 		RedBG = "\033[41m"
 	)
 
-	var spinner []string
-
-	// ? Notes for contributors:
-	// ? Feel free to add more spinner styles here :)
-
-	switch spinnerStyle {
-	case "clock":
-		spinner = []string{"|", "/", "-", "\\"}
-	default:
-		spinner = []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}
+	if isAlive {
+		fmt.Printf("\r%s %sOK%s %s%s.    ", spinner[i], Green, Reset, ip, Reset)
+	} else {
+		fmt.Printf("\r%s %s%sDEAD%s %s%s. ", spinner[i], RedBG, White, Reset, ip, Reset)
 	}
+}
+
+func main() {
+	ip, interval, msg, spinnerStyle := parseFlags()
+	spinner := getSpinnerStyle(spinnerStyle)
 
 	i := 0
 
 	for {
 		if checkConnection(ip, msg) {
-			fmt.Printf("\r%s %sOK%s %s%s.    ", spinner[i], Green, Reset, ip, Reset)
+			printStatus(true, spinner, i, ip)
 		} else {
-			fmt.Printf("\r%s %s%sDEAD%s %s%s. ", spinner[i], RedBG, White, Reset, ip, Reset)
+			printStatus(false, spinner, i, ip)
 		}
 
 		i = (i + 1) % len(spinner)
