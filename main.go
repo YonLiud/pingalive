@@ -50,12 +50,25 @@ func main() {
 		ip = os.Args[1]
 	}
 
+	const (
+		Reset = "\033[0m"
+		White = "\033[37m"
+		Green = "\033[32m"
+		Red   = "\033[31m"
+		Cyan  = "\033[36m"
+		RedBG = "\033[41m"
+	)
+
+	spinner := []string{"|", "/", "-", "\\"}
+	i := 0
+
 	for {
 		if checkConnection(ip) {
-			fmt.Printf("OK %s.\n", ip)
+			fmt.Printf("\r %s %sOK%s %s%s.    ", spinner[i], Green, Reset, ip, Reset)
 		} else {
-			fmt.Printf("DEAD %s.\n", ip)
+			fmt.Printf("\r %s %s%sDEAD%s %s%s.", spinner[i], RedBG, White, Reset, ip, Reset)
 		}
+		i = (i + 1) % len(spinner)
 		time.Sleep(250 * time.Millisecond)
 	}
 }
