@@ -83,7 +83,7 @@ func printStatus(isAlive bool, spinner []string, i int, ip string, index int) {
 	if isAlive {
 		fmt.Printf("\033[%d;0H%s %sOK%s %s%s    \n", index+1, spinner[i], Green, Reset, ip, Reset)
 	} else {
-		fmt.Printf("\033[%d;0H%s %s%sDEAD%s %s%s \n", index+1, spinner[i], RedBG, White, Reset, ip, Reset)
+		fmt.Printf("\033[%d;0H%s %s%sDOWN%s %s%s \n", index+1, spinner[i], RedBG, White, Reset, ip, Reset)
 	}
 }
 
