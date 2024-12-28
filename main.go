@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"net"
 	"os"
@@ -10,7 +11,7 @@ import (
 	"golang.org/x/net/ipv4"
 )
 
-func checkConnection(ip string) bool {
+func checkConnection(ip, msg string) bool {
 	conn, err := net.Dial("ip4:icmp", ip)
 	if err != nil {
 		return false
@@ -23,7 +24,7 @@ func checkConnection(ip string) bool {
 		Body: &icmp.Echo{
 			ID:   os.Getpid() & 0xffff,
 			Seq:  1,
-			Data: []byte("HELLO"),
+			Data: []byte(msg),
 		},
 	}
 
@@ -44,11 +45,14 @@ func checkConnection(ip string) bool {
 }
 
 func main() {
-	ip := "8.8.8.8"
+	var ip string
+	var interval int
+	var msg string
 
-	if len(os.Args) > 1 {
-		ip = os.Args[1]
-	}
+	flag.StringVar(&ip, "ip", "8.8.8.8", "Custom IP address to ping")
+	flag.IntVar(&interval, "interval", 250, "Custom interval (in ms) between checks")
+	flag.StringVar(&msg, "msg", "HELLO", "Custom message to send in the ICMP request")
+	flag.Parse()
 
 	const (
 		Reset = "\033[0m"
@@ -63,12 +67,13 @@ func main() {
 	i := 0
 
 	for {
-		if checkConnection(ip) {
-			fmt.Printf("\r %s %sOK%s %s%s.    ", spinner[i], Green, Reset, ip, Reset)
+		if checkConnection(ip, msg) {
+			fmt.Printf("\r%s%sOK%s %s%s.    ", spinner[i], Green, Reset, ip, Reset)
 		} else {
-			fmt.Printf("\r %s %s%sDEAD%s %s%s.", spinner[i], RedBG, White, Reset, ip, Reset)
+			fmt.Printf("\r%s%s%sDEAD%s %s%s. ", spinner[i], RedBG, White, Reset, ip, Reset)
 		}
+
 		i = (i + 1) % len(spinner)
-		time.Sleep(250 * time.Millisecond)
+		time.Sleep(time.Duration(interval) * time.Millisecond)
 	}
 }
