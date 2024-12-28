@@ -1,3 +1,3 @@
 # PingAlive
 
-Tired of random network hiccups and being unsure if you lost connection? Pingalive is the solution! It pings a server of your choice every 5 seconds and notifies you if the connection is lost.
+Tired of random network hiccups and being unsure if you lost connection? PingAlive is the solution! This lightweight utility constantly checks your network connection in the background, giving you live feedback on whether your connection is active or down.
