@@ -51,7 +51,7 @@ func main() {
 
 	flag.StringVar(&ip, "ip", "8.8.8.8", "Custom IP address to ping")
 	flag.IntVar(&interval, "interval", 250, "Custom interval (in ms) between checks")
-	flag.StringVar(&msg, "msg", "HELLO", "Custom message to send in the ICMP request")
+	flag.StringVar(&msg, "msg", "ping", "Custom message to send in the ICMP request")
 	flag.Parse()
 
 	const (
