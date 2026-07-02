@@ -1,9 +1,10 @@
 module pingalive
 
-go 1.23.3
+go 1.25.0
 
 require (
-	github.com/spf13/pflag v1.0.5 // indirect
-	golang.org/x/net v0.33.0 // indirect
-	golang.org/x/sys v0.28.0 // indirect
+	github.com/spf13/pflag v1.0.5
+	golang.org/x/net v0.55.0
 )
+
+require golang.org/x/sys v0.45.0 // indirect
